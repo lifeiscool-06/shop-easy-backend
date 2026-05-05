@@ -181,6 +181,9 @@
   </div>
 
   <script>
+  
+  const API = "https://shop-easy-backend-1rrf.onrender.com";
+  
     function showSection(id, btn) {
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -215,9 +218,10 @@ function loginUser() {
     document.getElementById("loginMsg").innerText =
       data.message;
 
-    if (data.message === "Login successful") {
-      window.location.href = "dashboard.html";
-    }
+if (data.message === "Login successful") {
+  localStorage.setItem("user", email);   // ✅ SAVE SESSION
+  window.location.href = "dashboard.html";
+}
   })
   .catch(error => {
     document.getElementById("loginMsg").innerText =
@@ -256,7 +260,10 @@ function registerUser() {
   });
 }
  
-
+function logout() {
+  localStorage.removeItem("user");
+  window.location.href = "index.html";
+}
 
     function resetPassword() {
       document.getElementById('resetMsg').innerText = 'Reset link sent to your email';
