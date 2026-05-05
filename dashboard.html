@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ShopEasy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/app.js"></script>
+<style>
+
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f5f7fa;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 30px;
+  background: white;
+  align-items: center;
+}
+
+.logo { font-size: 22px; font-weight: bold; color:#0f6f87; }
+
+.search input {
+  padding: 10px;
+  width: 300px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+  padding: 10px 30px;
+  background: #fff;
+  border-top: 1px solid #eee;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #555;
+}
+
+/* HERO */
+.hero {
+  display: flex;
+  margin: 20px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.hero-text {
+  padding: 40px;
+  width: 50%;
+}
+
+.hero img {
+  width: 50%;
+  object-fit: cover;
+}
+
+/* CATEGORY */
+.section {
+  margin: 20px;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  width: 220px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.card button {
+  margin-top: 10px;
+  background: #0f6f87;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* PRODUCTS */
+.product p {
+  margin: 5px 0;
+}
+
+.price { font-weight: bold; }
+.old { text-decoration: line-through; color: gray; font-size: 12px; }
+
+.badge {
+  background: red;
+  color: white;
+  padding: 3px 6px;
+  font-size: 10px;
+  border-radius: 5px;
+}
+
+/* REVIEWS */
+.review {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  width: 300px;
+}
+
+/* FEATURES STRIP */
+.features {
+  display: flex;
+  justify-content: space-around;
+  background: #fff;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* FOOTER */
+.footer {
+  background: #0f2a35;
+  color: white;
+  padding: 30px;
+}
+
+.footer-columns {
+  display: flex;
+  justify-content: space-between;
+}
+
+</style>
+</head>
+<script>
+  const user = localStorage.getItem("user");
+  if (!user) {
+    window.location.href = "index.html";
+  } else {
+    document.getElementById("userName").innerText = user;
+  }
+  localStorage.setItem("user", email);
+</script>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">🛒 ShopEasy</div>
+
+  <div class="search">
+    <input placeholder="Search for products...">
+  </div>
+
+Hi, <span id="userName"></span>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <a href="#">All Categories</a>
+  <a href="#">New Arrivals</a>
+  <a href="#">Best Sellers</a>
+  <a href="#">Deals</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <h2>Everything you need. Delivered with ease.</h2>
+    <p>Shop electronics, home, fitness & more</p>
+    <button>Shop Now</button>
+  </div>
+
+  <img src="https://images.unsplash.com/photo-1587614382346-ac7c1c6b5d0f">
+</div>
+
+<!-- CATEGORY -->
+<div class="section">
+<h3>Shop by Category</h3>
+
+<div class="cards">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9">
+<h4>Electronics</h4>
+<p>Latest gadgets</p>
+<button>Shop</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1586201375761-83865001e31c">
+<h4>Household</h4>
+<p>Home essentials</p>
+<button>Shop</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1594737625785-c1d6bb7a06b3">
+<h4>Fitness</h4>
+<p>Active gear</p>
+<button>Shop</button>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1558788353-f76d92427f16">
+<h4>Pets</h4>
+<p>Pet supplies</p>
+<button>Shop</button>
+</div>
+
+</div>
+</div>
+
+<!-- FEATURED -->
+<div class="section">
+  <h3>Featured Products</h3>
+  <div id="products" class="cards"></div>
+</div>
+
+<div class="card product">
+<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9">
+<p>iPhone 15 Pro</p>
+<p>★★★★★ (521)</p>
+<p class="price">$999</p>
+</div>
+
+<div class="card product">
+<img src="https://images.unsplash.com/photo-1518449032309-cc2a1e3cb0a7">
+<p>Sony Headphones</p>
+<p>★★★★☆ (814)</p>
+<p class="price">$349</p>
+</div>
+
+</div>
+</div>
+
+<!-- DEALS -->
+<div class="section">
+<h3>Best Deals</h3>
+
+<div class="cards">
+
+<div class="card product">
+<span class="badge">SALE</span>
+<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9">
+<p>Samsung S23</p>
+<p class="price">$429</p>
+<p class="old">$609</p>
+</div>
+
+<div class="card product">
+<span class="badge">SALE</span>
+<img src="https://images.unsplash.com/photo-1586201375761-83865001e31c">
+<p>Kitchen Set</p>
+<p class="price">$15</p>
+<p class="old">$44</p>
+</div>
+
+</div>
+</div>
+
+<!-- REVIEWS -->
+<div class="section">
+<h3>Customer Reviews</h3>
+
+<div class="cards">
+
+<div class="review">
+★★★★★
+<p>"Loved fast shipping"</p>
+</div>
+
+<div class="review">
+★★★★☆
+<p>"Very smooth experience"</p>
+</div>
+
+</div>
+</div>
+
+<!-- FEATURES -->
+<div class="features">
+<div>🚚 Free Shipping</div>
+<div>↩ 30 Days Return</div>
+<div>🔒 Secure Payment</div>
+<div>📞 Support</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+<div class="footer-columns">
+<div>About ShopEasy</div>
+<div>Customer Service</div>
+<div>My Account</div>
+<div>Company</div>
+</div>
+</div>
+
+</body>
+</html>
