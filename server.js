@@ -80,57 +80,48 @@ app.post("/register", async (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  try {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    // ✅ DEFAULT LOGIN (FOR TESTING)
-    if (email === "abc" && password === "abc") {
-      return res.status(200).json({
+  // ✅ DEFAULT LOGIN (FOR DEMO)
+  if (email === "abc" && password === "abc") {
+    return res.json({
+      message: "Login successful",
+      user: {
+        firstName: "Demo User",
+        email: "abc"
+      }
+    });
+  }
+
+  // 🔹 EXISTING DATABASE LOGIN
+  db.get(
+    `SELECT * FROM users WHERE email = ?`,
+    [email],
+    async (err, user) => {
+      if (err || !user) {
+        return res.status(401).json({
+          message: "Invalid email or password"
+        });
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      if (!isMatch) {
+        return res.status(401).json({
+          message: "Invalid email or password"
+        });
+      }
+
+      res.json({
         message: "Login successful",
         user: {
-          firstName: "Demo",
-          email: "abc"
+          id: user.id,
+          firstName: user.firstName,
+          email: user.email
         }
       });
     }
-
-    // 🔹 DB LOGIN
-    db.get(
-      `SELECT * FROM users WHERE email = ?`,
-      [email],
-      async (err, user) => {
-        if (err || !user) {
-          return res.status(401).json({
-            message: "Invalid email or password"
-          });
-        }
-
-        const isMatch = await bcrypt.compare(
-          password,
-          user.password
-        );
-
-        if (!isMatch) {
-          return res.status(401).json({
-            message: "Invalid email or password"
-          });
-        }
-
-        res.status(200).json({
-          message: "Login successful",
-          user: {
-            id: user.id,
-            firstName: user.firstName,
-            email: user.email
-          }
-        });
-      }
-    );
-  } catch (error) {
-    res.status(500).json({
-      message: "Server error during login"
-    });
-  }
+  );
 });
 
 app.get("/products", (req, res) => {
