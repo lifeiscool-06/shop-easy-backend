@@ -1,8 +1,4 @@
 // server.js
-// EasyBuy Backend using Node.js + Express + SQLite
-// Install first:
-// npm install express sqlite3 cors bcryptjs
-
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const cors = require("cors");
@@ -18,13 +14,13 @@ app.use(express.json());
 // Database connection
 const db = new sqlite3.Database("./easybuy.db", (err) => {
   if (err) {
-    console.log("Database connection error:", err.message);
+    console.error("Database connection error:", err.message);
   } else {
     console.log("Connected to SQLite database");
   }
 });
 
-// Create users table if not exists
+// Create users table
 db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
@@ -42,7 +38,9 @@ app.get("/", (req, res) => {
   res.send("Shop Easy Backend is running successfully");
 });
 
-// Register API
+// =======================
+// REGISTER API
+// =======================
 app.post("/register", async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
@@ -53,7 +51,6 @@ app.post("/register", async (req, res) => {
       });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     db.run(
@@ -63,11 +60,11 @@ app.post("/register", async (req, res) => {
       function (err) {
         if (err) {
           return res.status(400).json({
-            message: "User already exists or invalid data"
+            message: "User already exists"
           });
         }
 
-        res.status(200).json({
+        res.json({
           message: "Registration successful"
         });
       }
@@ -79,51 +76,70 @@ app.post("/register", async (req, res) => {
   }
 });
 
+// =======================
+// LOGIN API
+// =======================
 app.post("/login", (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  // ✅ DEFAULT LOGIN (FOR DEMO)
-  if (email === "abc" && password === "abc") {
-    return res.json({
-      message: "Login successful",
-      user: {
-        firstName: "Demo User",
-        email: "abc"
-      }
-    });
-  }
+    // 🔴 Validation
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email and password are required"
+      });
+    }
 
-  // 🔹 EXISTING DATABASE LOGIN
-  db.get(
-    `SELECT * FROM users WHERE email = ?`,
-    [email],
-    async (err, user) => {
-      if (err || !user) {
-        return res.status(401).json({
-          message: "Invalid email or password"
-        });
-      }
-
-      const isMatch = await bcrypt.compare(password, user.password);
-
-      if (!isMatch) {
-        return res.status(401).json({
-          message: "Invalid email or password"
-        });
-      }
-
-      res.json({
+    // ✅ DEFAULT LOGIN (IMPORTANT - put FIRST)
+    if (email === "abc" && password === "abc") {
+      return res.json({
         message: "Login successful",
         user: {
-          id: user.id,
-          firstName: user.firstName,
-          email: user.email
+          firstName: "Demo User",
+          email: "abc"
         }
       });
     }
-  );
+
+    // 🔹 DATABASE LOGIN
+    db.get(
+      `SELECT * FROM users WHERE email = ?`,
+      [email],
+      async (err, user) => {
+        if (err || !user) {
+          return res.status(401).json({
+            message: "Invalid email or password"
+          });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+          return res.status(401).json({
+            message: "Invalid email or password"
+          });
+        }
+
+        res.json({
+          message: "Login successful",
+          user: {
+            id: user.id,
+            firstName: user.firstName,
+            email: user.email
+          }
+        });
+      }
+    );
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error during login"
+    });
+  }
 });
 
+// =======================
+// PRODUCTS API
+// =======================
 app.get("/products", (req, res) => {
   res.json([
     {
@@ -157,7 +173,9 @@ app.get("/products", (req, res) => {
   ]);
 });
 
-// Start server
+// =======================
+// START SERVER
+// =======================
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
