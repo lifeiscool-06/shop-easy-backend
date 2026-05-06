@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop Easy</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #6dd5ed, #2193b0);
+      min-height: 100vh;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+
+    h1 {
+      color: #0f6f87;
+      margin-bottom: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 12px;
+      background: #e8f6fa;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .tab-btn.active {
+      background: #0f9dc2;
+      color: white;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button.action {
+      background: #0f9dc2;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    button.action:hover {
+      opacity: 0.9;
+    }
+
+    .orange {
+      background: #f39c12;
+    }
+
+    .features {
+      margin-top: 35px;
+      padding: 20px;
+      background: #f8fcfd;
+      border-radius: 16px;
+    }
+
+    ul {
+      margin-left: 20px;
+      margin-top: 10px;
+    }
+
+    .message {
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Shop Easy</h1>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showSection('login', this)">Login</button>
+      <button class="tab-btn" onclick="showSection('register', this)">Register</button>
+      <button class="tab-btn" onclick="showSection('forgot', this)">Forgot Password</button>
+    </div>
+
+<div id="login" class="section active">
+
+  <h2>Login to Shop Easy</h2>
+
+  <input
+    type="email"
+    id="loginEmail"
+    placeholder="Enter Email"
+  />
+
+  <input
+    type="password"
+    id="loginPassword"
+    placeholder="Enter Password"
+  />
+
+  <button onclick="loginUser()">
+    Login
+  </button>
+
+  <p id="loginMsg"></p>
+
+</div>
+
+    <div id="register" class="section">
+      <div class="grid">
+        <input type="text" placeholder="First Name" />
+        <input type="text" placeholder="Last Name" />
+        <input type="email" placeholder="Email" />
+        <input type="password" placeholder="Password" />
+      </div>
+      <button class="action" onclick="registerUser()">Register</button>
+      <p class="message" id="registerMsg"></p>
+    </div>
+
+    <div id="forgot" class="section">
+      <div class="grid">
+        <input type="email" placeholder="Enter your email" />
+      </div>
+      <button class="action orange" onclick="resetPassword()">Send Reset Link</button>
+      <p class="message" id="resetMsg"></p>
+	  <input type="text" id="firstName" placeholder="First Name" />
+<input type="text" id="lastName" placeholder="Last Name" />
+<input type="email" id="registerEmail" placeholder="Email" />
+<input type="password" id="registerPassword" placeholder="Password" />
+    </div>
+
+
+  </div>
+
+  <script>
+  
+  const API = "https://shop-easy-backend-1rrf.onrender.com";
+  
+    function showSection(id, btn) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+ 
+ 
+function loginUser() {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  if (!email || !password) {
+    document.getElementById("loginMsg").innerText =
+      "Please enter email and password";
+    return;
+  }
+
+  fetch("https://shop-easy-backend-1rrf.onrender.com/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById("loginMsg").innerText =
+      data.message;
+
+if (data.message === "Login successful") {
+  localStorage.setItem("user", email);   // ✅ ADD THIS LINE
+  window.location.href = "dashboard.html";
+}
+  })
+  .catch(error => {
+    document.getElementById("loginMsg").innerText =
+      "Login failed";
+  });
+}
+
+ 
+
+ 
+function registerUser() {
+  const firstName = document.getElementById("firstName").value;
+  const lastName = document.getElementById("lastName").value;
+  const email = document.getElementById("registerEmail").value;
+  const password = document.getElementById("registerPassword").value;
+
+  fetch("https://shop-easy-backend-1rrf.onrender.com/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById("registerMsg").innerText = data.message;
+  })
+  .catch(error => {
+    document.getElementById("registerMsg").innerText =
+      "Registration failed.";
+  });
+}
+ 
+function logout() {
+  localStorage.removeItem("user");
+  window.location.href = "index.html";
+}
+
+    function resetPassword() {
+      document.getElementById('resetMsg').innerText = 'Reset link sent to your email';
+    }
+  </script>
+</body>
+</html>
