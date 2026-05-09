@@ -181,14 +181,14 @@ app.get("/products", (req, res) => {
       name: "iPhone 17 Pro",
       description: "A17 chip, 256GB storage",
       price: 999,
-      image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9"
+      image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9q=20&w=200"
     },
     {
       id: 2,
       name: "Sony WH-1000XM5",
       description: "Noise cancelling headphones",
       price: 349,
-      image: "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MTJV3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1693248280978"
+      image: "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MTJV3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1693248280978?q=20&w=200"
 
     },
     {
@@ -196,14 +196,14 @@ app.get("/products", (req, res) => {
       name: "Logitech MX Master 3S",
       description: "Wireless performance mouse",
       price: 99,
-      image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3"
+      image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?q=20&w=200"
     },
     {
       id: 4,
       name: "Pet Comfort Bed",
       description: "Soft and cozy bed",
       price: 29,
-      image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=1200"
+      image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=20&w=200"
 
 
 
