@@ -206,11 +206,6 @@ app.get("/products", (req, res) => {
       image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=20&w=200"
 
 
-
-
-
-  ]);
-
 });
 
 // ======================
