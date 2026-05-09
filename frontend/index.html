@@ -156,10 +156,10 @@
 
     <div id="register" class="section">
       <div class="grid">
-        <input type="text" placeholder="First Name" />
-        <input type="text" placeholder="Last Name" />
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Password" />
+	  	  <input type="text" id="firstName" placeholder="First Name" />
+<input type="text" id="lastName" placeholder="Last Name" />
+<input type="email" id="registerEmail" placeholder="Email" />
+<input type="password" id="registerPassword" placeholder="Password" />
       </div>
       <button class="action" onclick="registerUser()">Register</button>
       <p class="message" id="registerMsg"></p>
@@ -171,10 +171,7 @@
       </div>
       <button class="action orange" onclick="resetPassword()">Send Reset Link</button>
       <p class="message" id="resetMsg"></p>
-	  <input type="text" id="firstName" placeholder="First Name" />
-<input type="text" id="lastName" placeholder="Last Name" />
-<input type="email" id="registerEmail" placeholder="Email" />
-<input type="password" id="registerPassword" placeholder="Password" />
+
     </div>
 
 
@@ -232,32 +229,51 @@ if (data.message === "Login successful") {
  
 
  
-function registerUser() {
+async function registerUser() {
+
   const firstName = document.getElementById("firstName").value;
   const lastName = document.getElementById("lastName").value;
   const email = document.getElementById("registerEmail").value;
   const password = document.getElementById("registerPassword").value;
 
-  fetch("https://shop-easy-backend-1rrf.onrender.com/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password
-    })
-  })
-  .then(response => response.json())
-  .then(data => {
+  try {
+
+    const response = await fetch("https://shop-easy-backend-1rrf.onrender.com/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        password
+      })
+    });
+
+    const data = await response.json();
+
     document.getElementById("registerMsg").innerText = data.message;
-  })
-  .catch(error => {
+
+    // ✅ Success
+    if (data.message === "Registration successful") {
+
+      alert("Account created successfully!");
+
+      // Optional: clear fields
+      document.getElementById("firstName").value = "";
+      document.getElementById("lastName").value = "";
+      document.getElementById("registerEmail").value = "";
+      document.getElementById("registerPassword").value = "";
+
+    }
+
+  } catch (error) {
+
     document.getElementById("registerMsg").innerText =
-      "Registration failed.";
-  });
+      "Server error. Please try again.";
+
+  }
 }
  
 function logout() {
